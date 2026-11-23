@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Capstone Commons – Student Project Portal</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&family=Source+Sans+3:wght@400;600&display=swap">
+<style>
+:root{--bg:#f3f6fb;--surface:#fff;--ink:#14213d;--mute:#5b6784;--line:#d9e0ee;--brand:#1f4fd8;--brand-ink:#fff;--ok:#0f7a4d;--warn:#b45309;--okbg:#dcf5e8;--warnbg:#fdecc8;--idle:#e6ebf6;--shade:rgba(20,33,61,.5);
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1424;--surface:#18203a;--ink:#e8edfb;--mute:#9aa6c7;--line:#2b3556;--brand:#7ea0ff;--brand-ink:#0e1424;--ok:#5be0a2;--warn:#f5b95a;--okbg:#12382a;--warnbg:#41300f;--idle:#232c4a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0e1424;--surface:#18203a;--ink:#e8edfb;--mute:#9aa6c7;--line:#2b3556;--brand:#7ea0ff;--brand-ink:#0e1424;--ok:#5be0a2;--warn:#f5b95a;--okbg:#12382a;--warnbg:#41300f;--idle:#232c4a;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 "Source Sans 3",system-ui,sans-serif}
+h1,h2,h3{font-family:"Bricolage Grotesque",system-ui,sans-serif;line-height:1.15;margin:0}
+a{color:var(--brand)}
+:focus-visible{outline:3px solid var(--brand);outline-offset:2px}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+.bar{max-width:1060px;margin:auto;padding:12px 18px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.brand{font:700 20px "Bricolage Grotesque",sans-serif;margin-right:auto;color:var(--ink);text-decoration:none}
+nav{display:flex;gap:4px;flex-wrap:wrap}
+nav a{padding:7px 12px;border-radius:8px;text-decoration:none;color:var(--mute);font-weight:600}
+nav a.on{background:var(--idle);color:var(--ink)}
+main{max-width:1060px;margin:auto;padding:26px 18px 60px}
+.hero{padding:10px 0 22px}
+.hero h1{font-size:clamp(30px,5vw,46px);max-width:16ch}
+.hero p{color:var(--mute);max-width:56ch;margin:10px 0 0}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin:16px 0}
+input,select,textarea,button{font:inherit;color:var(--ink)}
+input,select,textarea{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+textarea{min-height:110px;resize:vertical}
+label{display:block;font-weight:600;margin:12px 0 4px}
+.btn{background:var(--brand);color:var(--brand-ink);border:0;padding:10px 16px;border-radius:8px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-block}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn.sm{padding:6px 11px;font-size:14px}
+.btn.del{background:transparent;color:var(--warn);border:1px solid var(--line)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:8px}
+.card h3{font-size:19px}
+.card p{margin:0;color:var(--mute)}
+.meta{font-size:14px;color:var(--mute)}
+.tags{display:flex;gap:6px;flex-wrap:wrap}
+.tag{background:var(--idle);padding:2px 9px;border-radius:99px;font-size:13px}
+.pill{display:inline-block;padding:2px 10px;border-radius:99px;font-size:13px;font-weight:600;background:var(--idle)}
+.pill.approved{background:var(--okbg);color:var(--ok)}
+.pill.revision{background:var(--warnbg);color:var(--warn)}
+.score{font:700 28px "Bricolage Grotesque",sans-serif}
+.spacer{flex:1}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:22px;max-width:520px}
+.empty{padding:40px 20px;text-align:center;color:var(--mute);border:1px dashed var(--line);border-radius:12px}
+.stats{display:flex;gap:12px;flex-wrap:wrap;margin:14px 0}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 18px;min-width:120px}
+.stat b{font:700 26px "Bricolage Grotesque",sans-serif;display:block}
+#modal{position:fixed;inset:0;background:var(--shade);display:none;align-items:flex-start;justify-content:center;overflow:auto;padding:30px 14px;z-index:20}
+#modal.open{display:flex}
+.sheet{background:var(--surface);border-radius:14px;max-width:640px;width:100%;padding:24px;border:1px solid var(--line)}
+.fb{background:var(--idle);border-radius:10px;padding:12px 14px;margin-top:12px}
+.err{color:var(--warn);font-weight:600;min-height:1.4em}
+#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:99px;display:none;z-index:30}
+@media (prefers-reduced-motion:no-preference){.sheet{animation:pop .18s ease-out}@keyframes pop{from{transform:translateY(8px);opacity:0}}}
+</style>
+</head>
+<body>
+<header><div class="bar"><a class="brand" href="#showcase">Capstone Commons</a><nav id="nav" aria-label="Main"></nav></div></header>
+<main id="app"></main>
+<div id="modal" role="dialog" aria-modal="true"></div>
+<div id="toast" role="status"></div>
+<script>
+const KEY='capstone-commons-v1';
+let me=null;
+const uid=()=>Math.random().toString(36).slice(2,10);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let db={projects:[]},token=null;
+try{token=localStorage.getItem(KEY+'-t')}catch(e){}
+async function api(path,opts={}){const fd=opts.body instanceof FormData;const h=fd?{}:{'Content-Type':'application/json'};if(token)h.Authorization='Bearer '+token;
+ const r=await fetch('/api'+path,{...opts,headers:h,body:opts.body&&!fd?JSON.stringify(opts.body):opts.body});
+ const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.error||'Something went wrong. Try again.');return j}
+async function refresh(){try{me=token?await api('/me'):null}catch(e){token=null;me=null;try{localStorage.removeItem(KEY+'-t')}catch(x){}}
+ try{db.projects=await api('/projects')}catch(e){db.projects=[]}}
+function save(){}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.style.display='block';clearTimeout(toast.h);toast.h=setTimeout(()=>t.style.display='none',2600)}
+const fmt=t=>new Date(t).toLocaleDateString(undefined,{day:'numeric',month:'short',year:'numeric'});
+const label={submitted:'Awaiting review',approved:'Approved',revision:'Needs revision'};
+const pill=p=>`<span class="pill ${p.status}">${label[p.status]}</span>`;
+
+function nav(){
+  const v=route();const items=[['showcase','Showcase']];
+  if(me?.role==='student')items.push(['mine','My projects'],['new','Submit project']);
+  if(me?.role==='teacher')items.push(['review','Review queue']);
+  document.getElementById('nav').innerHTML=items.map(([h,l])=>`<a href="#${h}" class="${v===h?'on':''}">${l}</a>`).join('')+
+   (me?`<a href="#" onclick="logout();return false">Sign out (${esc(me.name.split(' ')[0])})</a>`:`<a href="#login" class="${v==='login'?'on':''}">Sign in</a>`);
+}
+const route=()=>(location.hash.slice(1)||'showcase').split('-')[0];
+function render(){
+  const v=route();nav();const a=document.getElementById('app');
+  if(['mine','new'].includes(v)&&me?.role!=='student')return a.innerHTML=gate('Sign in as a student to manage projects.');
+  if(v==='review'&&me?.role!=='teacher')return a.innerHTML=gate('Sign in as a teacher to review projects.');
+  ({showcase,mine,new:form,review,login})[v]?.(a)||0;
+}
+const gate=m=>`<div class="empty">${m}<br><br><a class="btn" href="#login">Go to sign in</a></div>`;
+
+function showcase(a){
+  window.q=window.q||'';
+  a.innerHTML=`<section class="hero"><h1>Student work worth a second look</h1><p>Approved projects from every course, with descriptions, tags and supporting resources. Students submit, teachers evaluate, and the best work lands here.</p></section>
+  <div class="row"><input id="q" type="search" placeholder="Search by title, course, tag or student" aria-label="Search projects" value="${esc(q)}" style="max-width:420px"></div><div id="list"></div>`;
+  const draw=()=>{const s=q.toLowerCase();const L=db.projects.filter(p=>p.status==='approved'&&(p.title+p.course+p.ownerName+p.tags.join(' ')).toLowerCase().includes(s));
+    document.getElementById('list').innerHTML=L.length?`<div class="grid">${L.map(card).join('')}</div>`:`<div class="empty">No approved projects match yet. ${me?.role==='student'?'<a href="#new">Submit yours.</a>':''}</div>`};
+  document.getElementById('q').oninput=e=>{q=e.target.value;draw()};draw();
+}
+const card=p=>`<article class="card"><div class="meta">${esc(p.course)}</div><h3>${esc(p.title)}</h3><p>${esc(p.desc.slice(0,130))}${p.desc.length>130?'…':''}</p><div class="tags">${p.tags.map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div><div class="row" style="margin:6px 0 0"><span class="meta">by ${esc(p.ownerName)}</span><span class="spacer"></span><button class="btn sm ghost" onclick="detail('${p.id}')">View project</button></div></article>`;
+
+function detail(id){
+  const p=db.projects.find(x=>x.id===id);if(!p)return;
+  openModal(`<h2>${esc(p.title)}</h2><p class="meta">${esc(p.course)} · by ${esc(p.ownerName)} · ${fmt(p.created)}</p>${pill(p)}
+  <p style="white-space:pre-wrap">${esc(p.desc)}</p><div class="tags">${p.tags.map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div>
+  <h3 style="margin-top:16px;font-size:17px">Resources</h3>
+  ${p.link?`<p><a href="${esc(p.link)}" target="_blank" rel="noopener">Project link</a></p>`:''}
+  ${p.file?`<p><a href="${p.file.data}" download="${esc(p.file.name)}">Download ${esc(p.file.name)}</a></p>`:''}
+  ${!p.link&&!p.file?'<p class="meta">No supporting files attached.</p>':''}
+  ${p.status!=='submitted'&&(me&&(me.role==='teacher'||me.id===p.owner)||p.status==='approved')?`<div class="fb"><div class="row" style="margin:0"><span class="score">${p.score}/100</span><span class="meta">Reviewed by ${esc(p.reviewer)}</span></div><p style="margin:6px 0 0">${esc(p.feedback)||'No written feedback.'}</p></div>`:''}
+  <div class="row"><button class="btn ghost" onclick="closeModal()">Close</button></div>`);
+}
+function openModal(h){const m=document.getElementById('modal');m.innerHTML=`<div class="sheet">${h}</div>`;m.classList.add('open')}
+function closeModal(){document.getElementById('modal').classList.remove('open')}
+document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+
+function mine(a){
+  const L=db.projects.filter(p=>p.owner===me.id).sort((x,y)=>y.created-x.created);
+  const n=s=>L.filter(p=>p.status===s).length;
+  a.innerHTML=`<h1>My projects</h1><div class="stats"><div class="stat"><b>${L.length}</b>Submitted</div><div class="stat"><b>${n('approved')}</b>Approved</div><div class="stat"><b>${n('revision')}</b>Need revision</div></div>
+  <div class="row"><a class="btn" href="#new">Submit new project</a></div>
+  ${L.length?`<div class="grid">${L.map(p=>`<article class="card"><div class="row" style="margin:0">${pill(p)}<span class="spacer"></span>${p.score!=null?`<span class="score">${p.score}</span>`:''}</div><h3>${esc(p.title)}</h3><div class="meta">${esc(p.course)} · ${fmt(p.created)}</div>${p.feedback?`<div class="fb"><b>Feedback</b><br>${esc(p.feedback)}</div>`:''}<div class="row" style="margin:6px 0 0"><button class="btn sm ghost" onclick="detail('${p.id}')">Open</button><a class="btn sm ghost" href="#new-${p.id}">Edit</a><button class="btn sm del" onclick="del('${p.id}')">Delete</button></div></article>`).join('')}</div>`:'<div class="empty">You haven’t submitted anything yet. Add your first project to get feedback.</div>'}`;
+}
+function del(id){if(confirm('Delete this project? This can’t be undone.')){api('/projects/'+id,{method:'DELETE'}).then(async()=>{await refresh();toast('Project deleted');render()}).catch(e=>toast(e.message))}}
+
+function form(a){
+  const id=location.hash.split('-')[1];const p=id?db.projects.find(x=>x.id===id&&x.owner===me.id):null;
+  a.innerHTML=`<h1>${p?'Edit project':'Submit a project'}</h1><div class="panel"><form id="f">
+  <label for="t">Title</label><input id="t" required maxlength="90" value="${esc(p?.title)}">
+  <label for="c">Course</label><input id="c" required maxlength="60" value="${esc(p?.course)}" placeholder="e.g. Database Systems">
+  <label for="d">Description</label><textarea id="d" required>${esc(p?.desc)}</textarea>
+  <label for="g">Tags (comma separated)</label><input id="g" value="${esc(p?.tags.join(', '))}">
+  <label for="l">Project link (repository or demo)</label><input id="l" type="url" value="${esc(p?.link)}" placeholder="https://">
+  <label for="fl">Supporting file (PDF, image or zip, up to 5 MB)</label><input id="fl" type="file">
+  ${p?.file?`<p class="meta">Current file: ${esc(p.file.name)}. Choose a new one to replace it.</p>`:''}
+  <p class="err" id="e"></p><button class="btn" type="submit">${p?'Save changes':'Submit project'}</button></form></div>`;
+  document.getElementById('f').onsubmit=async ev=>{ev.preventDefault();
+    const f=document.getElementById('fl').files[0];
+    if(f&&f.size>5*1024*1024)return document.getElementById('e').textContent='That file is over 5 MB. Compress it or share a link instead.';
+    const v=i=>document.getElementById(i).value.trim();
+    const fd=new FormData();fd.append('title',v('t'));fd.append('course',v('c'));fd.append('desc',v('d'));fd.append('tags',v('g'));fd.append('link',v('l'));if(f)fd.append('file',f);
+    try{await api(p?'/projects/'+p.id:'/projects',{method:p?'PUT':'POST',body:fd})}catch(x){return document.getElementById('e').textContent=x.message}
+    await refresh();toast(p?'Changes saved':'Project submitted');location.hash='mine'};
+}
+
+function review(a){
+  window.rf=window.rf||'submitted';
+  const all=db.projects,L=all.filter(p=>rf==='all'||p.status===rf).sort((x,y)=>y.created-x.created);
+  const n=s=>all.filter(p=>p.status===s).length;
+  a.innerHTML=`<h1>Review queue</h1><div class="stats"><div class="stat"><b>${n('submitted')}</b>Awaiting review</div><div class="stat"><b>${n('approved')}</b>Approved</div><div class="stat"><b>${n('revision')}</b>Sent back</div></div>
+  <div class="row"><label for="rfs" style="margin:0">Show</label><select id="rfs" style="max-width:220px"><option value="submitted">Awaiting review</option><option value="approved">Approved</option><option value="revision">Needs revision</option><option value="all">All projects</option></select></div>
+  ${L.length?`<div class="grid">${L.map(p=>`<article class="card"><div class="row" style="margin:0">${pill(p)}<span class="spacer"></span>${p.score!=null?`<span class="score">${p.score}</span>`:''}</div><h3>${esc(p.title)}</h3><div class="meta">${esc(p.ownerName)} · ${esc(p.course)} · ${fmt(p.created)}</div><div class="row" style="margin:6px 0 0"><button class="btn sm" onclick="evalForm('${p.id}')">${p.status==='submitted'?'Evaluate':'Update review'}</button><button class="btn sm ghost" onclick="detail('${p.id}')">Open</button></div></article>`).join('')}</div>`:'<div class="empty">Nothing here. New submissions will show up as soon as students send them.</div>'}`;
+  const s=document.getElementById('rfs');s.value=rf;s.onchange=()=>{rf=s.value;render()};
+}
+function evalForm(id){
+  const p=db.projects.find(x=>x.id===id);
+  openModal(`<h2>Evaluate: ${esc(p.title)}</h2><p class="meta">${esc(p.ownerName)} · ${esc(p.course)}</p><p style="white-space:pre-wrap">${esc(p.desc)}</p>
+  ${p.link?`<p><a href="${esc(p.link)}" target="_blank" rel="noopener">Open project link</a></p>`:''}${p.file?`<p><a href="${p.file.data}" download="${esc(p.file.name)}">Download ${esc(p.file.name)}</a></p>`:''}
+  <form id="ef"><label for="sc">Score (0–100)</label><input id="sc" type="number" min="0" max="100" required value="${p.score??''}">
+  <label for="st">Decision</label><select id="st"><option value="approved">Approve and publish to showcase</option><option value="revision">Send back for revision</option></select>
+  <label for="fb">Feedback for the student</label><textarea id="fb" required>${esc(p.feedback)}</textarea>
+  <div class="row"><button class="btn" type="submit">Save evaluation</button><button class="btn ghost" type="button" onclick="closeModal()">Cancel</button></div></form>`);
+  document.getElementById('st').value=p.status==='revision'?'revision':'approved';
+  document.getElementById('ef').onsubmit=async e=>{e.preventDefault();
+    try{await api('/projects/'+id+'/review',{method:'PUT',body:{score:+document.getElementById('sc').value,status:document.getElementById('st').value,feedback:document.getElementById('fb').value.trim()}})}catch(x){return toast(x.message)}
+    closeModal();await refresh();toast('Evaluation saved');render()};
+}
+
+function login(a){
+  a.innerHTML=`<h1>Sign in</h1><div class="panel"><form id="lf"><label for="em">Email</label><input id="em" type="email" required><label for="pw">Password</label><input id="pw" type="password" required>
+  <p class="err" id="le"></p><div class="row" style="margin:0"><button class="btn" type="submit">Sign in</button><button class="btn ghost" type="button" id="sw">Create an account</button></div></form>
+  <p class="meta" style="margin-top:18px">Try the demo: <b>student@demo.edu</b> / learn123 or <b>teacher@demo.edu</b> / teach123</p></div>`;
+  let reg=false;const sw=document.getElementById('sw');
+  sw.onclick=()=>{reg=!reg;document.querySelector('h1').textContent=reg?'Create an account':'Sign in';sw.textContent=reg?'I already have an account':'Create an account';
+    document.getElementById('lf').querySelector('.btn').textContent=reg?'Create account':'Sign in';
+    if(reg&&!document.getElementById('rn'))document.getElementById('em').insertAdjacentHTML('beforebegin',`<label for="rn">Full name</label><input id="rn" required><label for="ro">I am a</label><select id="ro"><option value="student">Student</option><option value="teacher">Teacher</option></select>`);
+    else if(!reg)['rn','ro'].forEach(i=>{const e=document.getElementById(i);e.previousElementSibling.remove();e.remove()})};
+  document.getElementById('lf').onsubmit=async e=>{e.preventDefault();
+    const er=document.getElementById('le'),em=document.getElementById('em').value.trim().toLowerCase(),pw=document.getElementById('pw').value;
+    try{const body=reg?{name:document.getElementById('rn').value.trim(),email:em,password:pw,role:document.getElementById('ro').value}:{email:em,password:pw};
+      const r=await api(reg?'/register':'/login',{method:'POST',body});token=r.token;try{localStorage.setItem(KEY+'-t',token)}catch(x){}
+      await refresh();toast('Signed in');location.hash=me.role==='teacher'?'review':'mine';render()}catch(x){er.textContent=x.message}};
+}
+function logout(){me=null;token=null;try{localStorage.removeItem(KEY+'-t')}catch(e){}location.hash='showcase';refresh().then(render)}
+window.addEventListener('hashchange',()=>{closeModal();render()});
+refresh().then(render);
+</script>
+</body>
+</html>
